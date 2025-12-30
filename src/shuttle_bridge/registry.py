@@ -1,0 +1,61 @@
+from typing import Optional
+from sqlmodel import SQLModel, Field, Session, select, Column as SQLModelColumn
+from sqlalchemy import Integer, String, UniqueConstraint
+from flask import Blueprint, request, jsonify
+
+MAX_NODE = (1 << 10) - 1
+
+
+class NodeRegistry(SQLModel, table=True):
+    __tablename__ = "node_registry"
+    id: Optional[int] = Field(default=None, primary_key=True)
+    device_key: str = Field(
+        sa_column=SQLModelColumn(
+            String(64),
+            nullable=False,
+            index=True,
+        )
+    )
+    node_id: int = Field(
+        sa_column=SQLModelColumn(
+            Integer,
+            nullable=False,
+        )
+    )
+
+    __table_args__ = (
+        UniqueConstraint("device_key", name="uq_node_registry_device_key"),
+        UniqueConstraint("node_id", name="uq_node_registry_node_id"),
+    )
+
+
+def allocate_node_id(sess: Session, device_key: str) -> int:
+    existing = sess.exec(
+        select(NodeRegistry).where(NodeRegistry.device_key == device_key)
+    ).first()
+    if existing:
+        return existing.node_id
+    used = set(x.node_id for x in sess.exec(select(NodeRegistry.node_id)).all())
+    for candidate in range(1, MAX_NODE + 1):
+        if candidate not in used:
+            entry = NodeRegistry(device_key=device_key, node_id=candidate)
+            sess.add(entry)
+            sess.commit()
+            return candidate
+    raise RuntimeError("No available node_id slots")
+
+
+def node_registry_blueprint(session_factory):
+    bp = Blueprint("node_registry", __name__)
+
+    @bp.post("/node/register")
+    def register():
+        payload = request.get_json(force=True) or {}
+        device_key = payload.get("device_key")
+        if not device_key or not isinstance(device_key, str) or len(device_key) > 64:
+            return jsonify({"error": "invalid device_key"}), 400
+        with session_factory() as sess:
+            node_id = allocate_node_id(sess, device_key)
+            return jsonify({"node_id": node_id})
+
+    return bp

@@ -1,0 +1,99 @@
+[tool.poetry]
+name = "shuttle_bridge"
+version = "0.0.1"
+description = "Sync Hub Utility, Transfers & Two-way Linked Endpoints, Batch Replication & Incremental Delta Gateway Engine"
+authors = ["Ryan Julyan <ryan@julyan.biz>"]
+license = "MIT"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+readme = "README.md"
+homepage = "https://github.com/systemizing-solutions/shuttle_bridge"
+repository = "https://github.com/systemizing-solutions/shuttle_bridge"
+packages = [
+    { include = "shuttle_bridge", from = "src" }
+]
+include = ["src/shuttle_bridge/*"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "^8.1.7"
+setuptools = "^75.3.0"
+packaging = "^24.2"
+sqlmodel = "^0.0.31"
+sqlalchemy = "^2.0.45"
+watchdog = "^6.0.0"
+
+# Include optional dependencies
+Flask = { version = "^3.0.3", optional = true }
+Flask-SQLAlchemy = { version = "^3.1.1", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+bumpver = "^2024.1130"
+coverage = "^7.6.4"
+flake8 = "^7.1.1"
+flake8-html = "^0.4.3"
+isort = "^5.13.2"
+mypy = "^1.13.0"
+pytest = "^8.3.3"
+
+[tool.poetry.extras]
+flask = [
+    "Flask",
+    "Flask-SQLAlchemy",
+]
+
+[tool.urls]
+"Homepage" = "https://github.com/systemizing-solutions/shuttle_bridge"
+"Repository" = "https://github.com/systemizing-solutions/shuttle_bridge"
+
+[tool.poetry.scripts]
+shuttle_bridge = "shuttle_bridge.cli.main:cli" 
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+branch = true
+source = ["src/shuttle_bridge"]
+omit = [
+  "*/tests/*",
+  "*/__main__.py",
+  "venv/*"
+]
+
+[tool.coverage.report]
+show_missing = true
+omit = [
+  "*/tests/*",
+  "*/__main__.py",
+  "*/examples/*"
+]
+
+[tool.bumpver]
+current_version = "0.0.1"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "bump version {old_version} -> {new_version}"
+tag_message = "{new_version}"
+tag_scope = "default"
+pre_commit_hook = ""
+post_commit_hook = ""
+commit = true
+tag = true
+push = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    '^version = "{version}"',
+    '^current_version = "{version}"',
+]
+"src/shuttle_bridge/__init__.py" = [
+    '__version__ = "{version}"',
+]
+"README.md" = [
+    '^current_version = "v{version}"',
+]

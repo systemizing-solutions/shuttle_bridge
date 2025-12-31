@@ -47,4 +47,3 @@ class Order(SyncRowSQLModelMixin, SQLModel, table=True):
         )
     )
     customer: Optional[Customer] = Relationship(back_populates="orders")
-

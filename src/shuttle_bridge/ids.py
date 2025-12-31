@@ -22,7 +22,7 @@ _registry_lock = threading.Lock()
 def set_id_generator(node_id: int | str) -> None:
     """
     Set the ID generator for this thread/request context.
-    
+
     For single-tenant applications: Call once during startup.
     For multi-tenant applications: Call at the beginning of each request with the tenant's node_id.
 
@@ -50,15 +50,15 @@ def get_id_generator() -> Callable[[], int]:
         Callable that generates unique IDs. Raises RuntimeError if not set.
     """
     # Check thread-local storage first
-    if hasattr(_local, 'id_generator') and _local.id_generator is not None:
+    if hasattr(_local, "id_generator") and _local.id_generator is not None:
         return _local.id_generator
-    
+
     # Fall back to default (for single-tenant cases)
     global _default_id_generator
     with _registry_lock:
         if _default_id_generator is not None:
             return _default_id_generator
-    
+
     raise RuntimeError(
         "ID generator not initialized. Call set_id_generator(node_id) first."
     )
@@ -68,9 +68,8 @@ def clear_id_generator() -> None:
     """
     Clear the thread-local ID generator. Useful for cleaning up after request processing.
     """
-    if hasattr(_local, 'id_generator'):
+    if hasattr(_local, "id_generator"):
         _local.id_generator = None
-
 
 
 class KSortedID:

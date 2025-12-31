@@ -16,7 +16,7 @@ def set_current_node_id(node_id: Optional[str]) -> None:
 
 def get_current_node_id() -> Optional[str]:
     """Get the current node_id for change logging."""
-    return getattr(_current_node_id, 'value', None)
+    return getattr(_current_node_id, "value", None)
 
 
 def _summary(obj, keys=("updated_at", "deleted_at", "version")):
@@ -35,7 +35,12 @@ def _summary(obj, keys=("updated_at", "deleted_at", "version")):
 def _log(connection, table: str, pk: int, op: str, version: int, summary):
     connection.execute(
         ChangeLog.__table__.insert().values(
-            table=table, pk=pk, op=op, version=version, summary=summary, node_id=get_current_node_id()
+            table=table,
+            pk=pk,
+            op=op,
+            version=version,
+            summary=summary,
+            node_id=get_current_node_id(),
         )
     )
 
@@ -45,7 +50,7 @@ def attach_change_hooks(model: Type, table_name: str):
     def _bump_version(mapper, connection, target):
         # Check if any actual data changed (not just updated_at)
         from sqlalchemy.orm import attributes
-        
+
         # Get the session history for modified attributes
         has_real_changes = False
         for attr in mapper.attrs:
@@ -57,7 +62,7 @@ def attach_change_hooks(model: Type, table_name: str):
             if history.added or history.deleted:
                 has_real_changes = True
                 break
-        
+
         if has_real_changes:
             cur = getattr(target, "version", 1)
             try:
@@ -81,7 +86,7 @@ def attach_change_hooks(model: Type, table_name: str):
     def _after_update(mapper, connection, target):
         # Check if any real data changed (not just updated_at)
         from sqlalchemy.orm import attributes
-        
+
         # Get the session history for modified attributes
         has_real_changes = False
         for attr in mapper.attrs:
@@ -93,7 +98,7 @@ def attach_change_hooks(model: Type, table_name: str):
             if history.added or history.deleted:
                 has_real_changes = True
                 break
-        
+
         # Only log if actual data changed
         if has_real_changes:
             _log(

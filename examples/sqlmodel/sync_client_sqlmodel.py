@@ -42,11 +42,11 @@ def main():
             node_id=str(node_id),
         )
         remote = HttpPeerTransport(SERVER_BASE_URL)
-        
+
         # Pull from server first to get any existing data
         pulled, pushed = engine.pull_then_push(remote)
         print(f"Sync finished. Pulled: {pulled}, Pushed: {pushed}")
-        
+
         # Then check if we have customers, if not create one
         customer = sess.exec(select(Customer)).first()
         if not customer:
@@ -54,7 +54,7 @@ def main():
             sess.add(customer)
             sess.commit()
             print(f"Created customer: {customer.name} (ID: {customer.id})")
-        
+
         # Always add a new order with random values
         statuses = ["new", "pending", "shipped", "delivered", "cancelled"]
         order = Order(
@@ -67,7 +67,7 @@ def main():
         print(
             f"Created order (ID: {order.id}) for customer {customer.name} - Status: {order.status}, Total: ${order.total_cents/100:.2f}"
         )
-        
+
         # Sync again to push the new order
         pulled, pushed = engine.pull_then_push(remote)
         print(f"Second sync finished. Pulled: {pulled}, Pushed: {pushed}")

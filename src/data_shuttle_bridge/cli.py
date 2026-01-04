@@ -2,6 +2,7 @@ import os
 import sys
 import argparse
 from .nodeid import ClientNodeManager
+from .file_backup.cli import add_backup_commands
 
 
 def _require_env(name: str) -> str:
@@ -40,6 +41,7 @@ def main(argv=None):
     )
     sub = parser.add_subparsers(dest="cmd", required=True)
 
+    # Node commands
     p_init = sub.add_parser("node", help="Node management commands")
     sub_node = p_init.add_subparsers(dest="node_cmd", required=True)
 
@@ -53,6 +55,9 @@ def main(argv=None):
 
     p_node_show = sub_node.add_parser("show", help="Show local device_key and node_id")
     p_node_show.set_defaults(func=cmd_node_show)
+
+    # Backup commands
+    add_backup_commands(sub)
 
     args = parser.parse_args(argv)
     return args.func(args)

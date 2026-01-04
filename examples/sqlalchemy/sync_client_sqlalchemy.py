@@ -2,7 +2,7 @@ import random
 
 from sqlalchemy.orm import Session
 
-from shuttle_bridge import (
+from data_shuttle_bridge import (
     SyncEngine,
     ConflictPolicy,
     ClientNodeManager,
@@ -23,7 +23,7 @@ DB_URL = "sqlite:///local_client_sqlalchemy.db"
 SERVER_BASE_URL = "http://127.0.0.1:5002"
 
 init_engine(DB_URL)
-# Create both custom tables and shuttle_bridge tables
+# Create both custom tables and data_shuttle_bridge tables
 Base.metadata.create_all(get_engine())
 SQLModel.metadata.create_all(get_engine())
 

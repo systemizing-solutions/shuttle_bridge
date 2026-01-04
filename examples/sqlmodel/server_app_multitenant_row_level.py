@@ -4,7 +4,11 @@ from flask import Flask, request, g
 from sqlmodel import SQLModel, create_engine, Session
 from sqlalchemy.orm import sessionmaker
 
-from shuttle_bridge import tenant_sync_blueprint_row_level, ChangeLogMT, SyncStateMT
+from data_shuttle_bridge import (
+    tenant_sync_blueprint_row_level,
+    ChangeLogMT,
+    SyncStateMT,
+)
 
 from models_sqlmodel import Customer, Order
 

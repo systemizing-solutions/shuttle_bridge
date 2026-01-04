@@ -5,7 +5,7 @@ from sqlmodel import SQLModel
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
-from shuttle_bridge import (
+from data_shuttle_bridge import (
     tenant_sync_blueprint_db_per_tenant,
     build_schema,
     attach_change_hooks_for_models,

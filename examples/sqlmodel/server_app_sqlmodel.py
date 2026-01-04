@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from sqlmodel import select
 
-from shuttle_bridge import (
+from data_shuttle_bridge import (
     attach_change_hooks_for_models,
     SyncEngine,
     ConflictPolicy,

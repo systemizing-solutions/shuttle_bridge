@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from sqlalchemy import select as sa_select
 from sqlalchemy.orm import Session
 
-from shuttle_bridge import (
+from data_shuttle_bridge import (
     attach_change_hooks_for_models,
     SyncEngine,
     ConflictPolicy,
@@ -26,7 +26,7 @@ set_id_generator("server-node")
 
 DB_URL = "sqlite:///remote_server_sqlalchemy.db"
 init_engine(DB_URL)
-# Create both custom tables and shuttle_bridge tables
+# Create both custom tables and data_shuttle_bridge tables
 Base.metadata.create_all(get_engine())
 SQLModel.metadata.create_all(get_engine())
 

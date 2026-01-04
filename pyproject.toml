@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "shuttle_bridge"
+name = "data_shuttle_bridge"
 version = "0.0.1"
 description = "Sync Hub Utility, Transfers & Two-way Linked Endpoints, Batch Replication & Incremental Delta Gateway Engine"
 authors = ["Ryan Julyan <ryan@julyan.biz>"]
@@ -10,12 +10,12 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 readme = "README.md"
-homepage = "https://github.com/systemizing-solutions/shuttle_bridge"
-repository = "https://github.com/systemizing-solutions/shuttle_bridge"
+homepage = "https://github.com/systemizing-solutions/data_shuttle_bridge"
+repository = "https://github.com/systemizing-solutions/data_shuttle_bridge"
 packages = [
-    { include = "shuttle_bridge", from = "src" }
+    { include = "data_shuttle_bridge", from = "src" }
 ]
-include = ["src/shuttle_bridge/*"]
+include = ["src/data_shuttle_bridge/*"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -25,6 +25,7 @@ packaging = "^24.2"
 sqlmodel = "^0.0.31"
 sqlalchemy = "^2.0.45"
 watchdog = "^6.0.0"
+fsspec = "^2024.2.0"
 
 # Include optional dependencies
 Flask = { version = "^3.0.3", optional = true }
@@ -47,11 +48,11 @@ flask = [
 ]
 
 [tool.urls]
-"Homepage" = "https://github.com/systemizing-solutions/shuttle_bridge"
-"Repository" = "https://github.com/systemizing-solutions/shuttle_bridge"
+"Homepage" = "https://github.com/systemizing-solutions/data_shuttle_bridge"
+"Repository" = "https://github.com/systemizing-solutions/data_shuttle_bridge"
 
 [tool.poetry.scripts]
-shuttle_bridge = "shuttle_bridge.cli.main:cli" 
+data_shuttle_bridge = "data_shuttle_bridge.cli:main" 
 
 [build-system]
 requires = ["poetry-core"]
@@ -59,7 +60,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.coverage.run]
 branch = true
-source = ["src/shuttle_bridge"]
+source = ["src/data_shuttle_bridge"]
 omit = [
   "*/tests/*",
   "*/__main__.py",
@@ -91,7 +92,7 @@ push = true
     '^version = "{version}"',
     '^current_version = "{version}"',
 ]
-"src/shuttle_bridge/__init__.py" = [
+"src/data_shuttle_bridge/__init__.py" = [
     '__version__ = "{version}"',
 ]
 "README.md" = [

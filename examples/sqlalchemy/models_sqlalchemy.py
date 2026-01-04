@@ -3,7 +3,7 @@ from typing import Optional
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy import Column, String, Integer, ForeignKey
 
-from shuttle_bridge.mixins import SyncRowSAMixin
+from data_shuttle_bridge.mixins import SyncRowSAMixin
 
 Base = declarative_base()
 

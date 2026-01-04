@@ -1,4 +1,4 @@
-# shuttle_bridge
+# data_shuttle_bridge
 - **S.H.U.T.T.L.E:** **S**ync **H**ub **U**tility, **T**ransfers & **T**wo-way **L**inked **E**ndpoints
 - **B.R.I.D.G.E:** **B**atch **R**eplication & **I**ncremental **D**elta **G**ateway **E**ngine
 
@@ -44,7 +44,7 @@ This bidirectional tracking ensures each side independently knows what it has se
 
 ### Dirty Field Tracking
 
-To prevent meaningless changelog entries and version increments, shuttle_bridge implements **dirty field tracking** at the ORM event level:
+To prevent meaningless changelog entries and version increments, data_shuttle_bridge implements **dirty field tracking** at the ORM event level:
 
 **Problem it solves:**
 When rows are synced from the remote peer, the database's `onupdate: func.now()` auto-updates the `updated_at` timestamp. Previously, this triggered SQLAlchemy's `before_update` hook, which would increment the version and create a changelog entry, even though no actual data changed. This caused unnecessary version bumps (e.g., version jumping to 7 without any real modifications).
@@ -64,14 +64,14 @@ When rows are synced from the remote peer, the database's `onupdate: func.now()`
 
 ### Install
 ```shell
-pip install shuttle_bridge
+pip install data_shuttle_bridge
 ```
 
 ## Usage Guide
 
 ### Understanding Nodes
 
-In shuttle_bridge, a **node** represents a unique device or client instance in your sync network. Each node has:
+In data_shuttle_bridge, a **node** represents a unique device or client instance in your sync network. Each node has:
 
 - **`node_id`**: A string identifier (e.g., `"1"`, `"device-123"`, `"server-node"`) that uniquely identifies this instance
 - **`KSortedID` generator**: Uses the `node_id` to generate globally unique 64-bit IDs that never collide across devices
@@ -84,7 +84,7 @@ In shuttle_bridge, a **node** represents a unique device or client instance in y
 The `ClientNodeManager` handles node registration automatically. Simply call `set_id_generator()` once during startup:
 
 ```python
-from shuttle_bridge import ClientNodeManager, set_id_generator
+from data_shuttle_bridge import ClientNodeManager, set_id_generator
 
 # 1. Register/ensure this client has a unique node_id from the server
 manager = ClientNodeManager()
@@ -100,7 +100,7 @@ set_id_generator(node_id)
 **Option 2: Manual Node Assignment (For Testing or Server)**
 
 ```python
-from shuttle_bridge import set_id_generator
+from data_shuttle_bridge import set_id_generator
 
 # Set the node_id for this instance
 set_id_generator("server-node")
@@ -114,7 +114,7 @@ For multi-tenant applications, call `set_id_generator()` at the beginning of eac
 
 ```python
 from flask import Flask, g
-from shuttle_bridge import set_id_generator, clear_id_generator
+from data_shuttle_bridge import set_id_generator, clear_id_generator
 
 app = Flask(__name__)
 
@@ -136,7 +136,7 @@ The thread-local storage ensures each request/tenant gets its own ID generator w
 For applications that need more control over ID generation, you can use `KSortedID` directly:
 
 ```python
-from shuttle_bridge import KSortedID
+from data_shuttle_bridge import KSortedID
 
 # Create your own ID generator with explicit node_id
 id_gen = KSortedID(node_id=1)  # node_id must be 0-1023
@@ -162,7 +162,7 @@ The server acts as the central sync hub, storing all changes and distributing th
 
 ```python
 from flask import Flask
-from shuttle_bridge import (
+from data_shuttle_bridge import (
     sync_blueprint,
     node_registry_blueprint,
     SyncEngine,
@@ -218,7 +218,7 @@ if __name__ == "__main__":
 Clients pull changes from the server, create local data, and push their changes back:
 
 ```python
-from shuttle_bridge import (
+from data_shuttle_bridge import (
     SyncEngine,
     ClientNodeManager,
     build_schema,
@@ -306,7 +306,7 @@ Your models now automatically get ID generation! Just inherit from the mixin:
 **For SQLModel:**
 ```python
 from sqlmodel import SQLModel, Field
-from shuttle_bridge.mixins import SyncRowSQLModelMixin
+from data_shuttle_bridge.mixins import SyncRowSQLModelMixin
 
 class Customer(SyncRowSQLModelMixin, SQLModel, table=True):
     name: str
@@ -318,7 +318,7 @@ class Customer(SyncRowSQLModelMixin, SQLModel, table=True):
 ```python
 from sqlalchemy import Column, String
 from sqlalchemy.orm import declarative_base
-from shuttle_bridge.mixins import SyncRowSAMixin
+from data_shuttle_bridge.mixins import SyncRowSAMixin
 
 Base = declarative_base()
 
@@ -351,7 +351,7 @@ venv/scripts/activate
 source venv/bin/activate
 ```
 
-### Install the local `shuttle_bridge` project
+### Install the local `data_shuttle_bridge` project
 #### Install `poetry` package manager
 ```shell
 pip install poetry
@@ -363,7 +363,7 @@ poetry cache clear pypi --all -n
 poetry lock
 ```
 
-#### Install `shuttle_bridge` package via `poetry` (including dependencies)
+#### Install `data_shuttle_bridge` package via `poetry` (including dependencies)
 ```shell
 poetry install
 ```
@@ -408,9 +408,9 @@ This project uses GitHub Actions to automatically publish to PyPI when a new ver
    - Go to https://pypi.org/manage/account/publishing/
    - Click "Add a new pending publisher"
    - Fill in the following details:
-     - **PyPI Project Name**: `shuttle_bridge`
+     - **PyPI Project Name**: `data_shuttle_bridge`
      - **Owner**: `RyanJulyan` (your GitHub username)
-     - **Repository name**: `shuttle_bridge`
+     - **Repository name**: `data_shuttle_bridge`
      - **Workflow name**: `publish.yml`
      - **Environment name**: `pypi`
    - Click "Add pending publisher"
@@ -423,7 +423,7 @@ bumpver update --patch  # or --minor, --major
 ```
 
 This will:
-1. Update the version in `pyproject.toml`, `src/shuttle_bridge/__init__.py`, and `README.md`
+1. Update the version in `pyproject.toml`, `src/data_shuttle_bridge/__init__.py`, and `README.md`
 2. Create a git commit with the version bump
 3. Create a git tag (e.g., `4.0.1`)
 4. Push the tag to GitHub

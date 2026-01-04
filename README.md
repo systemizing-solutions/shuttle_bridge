@@ -29,7 +29,6 @@ Lightweight backup tool with multi-backend support:
 - **File metadata** - Preserves permissions, timestamps, and directory structure
 - **Extensible architecture** - ChunkingStrategy interface for compression/encryption
 - **Comprehensive CLI** - Simple commands for init, backup, snapshots, restore
-- **100% test coverage** - 15 comprehensive tests, production-ready code
 
 current_version = "v0.0.1"
 

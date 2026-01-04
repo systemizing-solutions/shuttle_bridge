@@ -1,5 +1,8 @@
 import random
 
+from sqlmodel import SQLModel
+
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from data_shuttle_bridge import (
@@ -13,8 +16,6 @@ from data_shuttle_bridge import (
     ChangeLog,
     SyncState,
 )
-from sqlmodel import SQLModel
-from sqlalchemy import select
 
 from db import init_engine, get_engine, make_session
 from models_sqlalchemy import Base, Customer, Order

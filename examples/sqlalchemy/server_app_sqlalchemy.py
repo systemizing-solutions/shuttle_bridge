@@ -1,4 +1,7 @@
 from flask import Flask, jsonify
+
+from sqlmodel import SQLModel
+
 from sqlalchemy import select as sa_select
 from sqlalchemy.orm import Session
 
@@ -14,7 +17,6 @@ from data_shuttle_bridge import (
     ChangeLog,
     SyncState,
 )
-from sqlmodel import SQLModel
 
 from db import init_engine, get_engine, make_session
 from models_sqlalchemy import Base, Customer, Order

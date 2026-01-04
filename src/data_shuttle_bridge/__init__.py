@@ -1,3 +1,4 @@
+# SQL
 from data_shuttle_bridge.sql.ids import (
     KSortedID,
     set_id_generator,
@@ -31,7 +32,26 @@ from data_shuttle_bridge.sql.tenancy import (
     tenant_sync_blueprint_row_level,
 )
 
+# File Backup
+from data_shuttle_bridge.file_backup.runtime import (
+    init_repo,
+    run_backup,
+    list_snapshots,
+    run_restore,
+)
+from data_shuttle_bridge.file_backup.repo.repository import (
+    Repository,
+    Snapshot,
+    FileEntry,
+)
+from data_shuttle_bridge.file_backup.pipeline.chunking import (
+    ChunkingStrategy,
+    FixedSizeChunker,
+)
+
+
 __all__ = [
+    # SQL
     "KSortedID",
     "set_id_generator",
     "get_id_generator",
@@ -60,6 +80,16 @@ __all__ = [
     "ChangeLogMT",
     "SyncStateMT",
     "tenant_sync_blueprint_row_level",
+    # File
+    "init_repo",
+    "run_backup",
+    "list_snapshots",
+    "run_restore",
+    "Repository",
+    "Snapshot",
+    "FileEntry",
+    "ChunkingStrategy",
+    "FixedSizeChunker",
 ]
 
 __version__ = "0.0.1"

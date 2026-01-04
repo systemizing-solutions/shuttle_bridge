@@ -3,7 +3,7 @@ from typing import Optional, List
 from sqlmodel import SQLModel, Field, Relationship, Column as SQLModelColumn
 from sqlalchemy import String, Integer, ForeignKey
 
-from data_shuttle_bridge.mixins import SyncRowSQLModelMixin
+from data_shuttle_bridge import SyncRowSQLModelMixin
 
 
 class Customer(SyncRowSQLModelMixin, SQLModel, table=True):

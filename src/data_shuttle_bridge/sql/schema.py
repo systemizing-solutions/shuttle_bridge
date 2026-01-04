@@ -1,5 +1,6 @@
 from typing import Iterable, Dict, Type, List, Set
-from .payloads import TableSchema
+
+from data_shuttle_bridge.sql.payloads import TableSchema
 
 
 def build_schema(models: Iterable[Type]) -> Dict[str, TableSchema]:

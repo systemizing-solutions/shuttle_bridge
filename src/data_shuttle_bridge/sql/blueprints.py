@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
-from .typing_ import ChangePayload
-from .sync import SyncEngine
+
+from data_shuttle_bridge.sql.typing_ import ChangePayload
+from data_shuttle_bridge.sql.sync import SyncEngine
 
 
 def sync_blueprint(engine_factory):

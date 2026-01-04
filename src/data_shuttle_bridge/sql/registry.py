@@ -1,7 +1,10 @@
 from typing import Optional
-from sqlmodel import SQLModel, Field, Session, select, Column as SQLModelColumn
-from sqlalchemy import Integer, String, UniqueConstraint
+
 from flask import Blueprint, request, jsonify
+
+from sqlmodel import SQLModel, Field, Session, select, Column as SQLModelColumn
+
+from sqlalchemy import Integer, String, UniqueConstraint
 
 MAX_NODE = (1 << 10) - 1
 

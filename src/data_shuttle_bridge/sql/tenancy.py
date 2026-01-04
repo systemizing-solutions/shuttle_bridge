@@ -1,16 +1,19 @@
 from __future__ import annotations
+
 from typing import Any, Callable, Iterable, Optional, Type, Dict, List, Set, Tuple
 
 from flask import Blueprint, request, jsonify, g
-from sqlalchemy import event, String as SA_String, Integer as SA_Integer, JSON
-from sqlalchemy.orm import Session
+
 from sqlmodel import SQLModel, Field, select, Column as SQLModelColumn
 
-from .typing_ import ChangePayload
-from .payloads import TableSchema, apply_row
-from .schema import build_schema
-from .sync import ConflictPolicy
-from .wiring import _summary
+from sqlalchemy import event, String as SA_String, Integer as SA_Integer, JSON
+from sqlalchemy.orm import Session
+
+from data_shuttle_bridge.sql.typing_ import ChangePayload
+from data_shuttle_bridge.sql.payloads import TableSchema, apply_row
+from data_shuttle_bridge.sql.schema import build_schema
+from data_shuttle_bridge.sql.sync import ConflictPolicy
+from data_shuttle_bridge.sql.wiring import _summary
 
 # -------------------------------
 # A) DATABASE-PER-TENANT (recommended)

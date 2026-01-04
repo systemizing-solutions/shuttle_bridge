@@ -7,7 +7,11 @@ from pathlib import Path
 from typing import Optional
 import uuid
 
-from shuttle_bridge.frl.repo.repository import Repository, Snapshot, FileEntry
+from data_shuttle_bridge.file_backup.repo.repository import (
+    Repository,
+    Snapshot,
+    FileEntry,
+)
 
 
 def init_repo(url: str) -> None:

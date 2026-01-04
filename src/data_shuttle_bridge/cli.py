@@ -1,16 +1,9 @@
 import os
 import sys
 import argparse
-from .nodeid import ClientNodeManager
-from .file_backup.cli import add_backup_commands
 
-
-def _require_env(name: str) -> str:
-    val = os.environ.get(name)
-    if not val:
-        print(f"Environment variable {name} is required.", file=sys.stderr)
-        sys.exit(2)
-    return val
+from data_shuttle_bridge.sql.nodeid import ClientNodeManager
+from data_shuttle_bridge.file_backup.cli import add_backup_commands
 
 
 def cmd_node_init(args: argparse.Namespace) -> int:

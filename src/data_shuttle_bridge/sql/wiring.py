@@ -1,9 +1,12 @@
-from typing import Type, Iterable, Optional
-from datetime import datetime
-from sqlalchemy import event
-from sqlmodel import SQLModel
-from .changelog import ChangeLog
 import threading
+from datetime import datetime
+from typing import Type, Iterable, Optional
+
+from sqlmodel import SQLModel
+
+from sqlalchemy import event
+
+from data_shuttle_bridge.sql.changelog import ChangeLog
 
 # Thread-local storage for current node_id during sync operations
 _current_node_id: threading.local = threading.local()

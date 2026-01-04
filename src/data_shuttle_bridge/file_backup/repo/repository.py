@@ -12,12 +12,16 @@ import uuid
 import fsspec
 from fsspec.spec import AbstractFileSystem
 
-from ..pipeline.chunking import ChunkingStrategy, FixedSizeChunker
+from data_shuttle_bridge.file_backup.pipeline.chunking import (
+    ChunkingStrategy,
+    FixedSizeChunker,
+)
 
 
 @dataclass
 class FileEntry:
     """Represents a file in a snapshot."""
+
     path: str
     size: int
     mtime_ns: int
@@ -28,6 +32,7 @@ class FileEntry:
 @dataclass
 class Snapshot:
     """Represents a snapshot manifest."""
+
     snapshot_id: str
     created_at: float
     hostname: str
@@ -115,7 +120,11 @@ class Repository:
         # Write config
         config = {
             "version": "1",
-            "chunk_size": self.chunker.chunk_size if hasattr(self.chunker, 'chunk_size') else 4194304,
+            "chunk_size": (
+                self.chunker.chunk_size
+                if hasattr(self.chunker, "chunk_size")
+                else 4194304
+            ),
             "created_at": int(datetime.now(timezone.utc).timestamp()),
         }
         config_path = self.root + "config.json"
@@ -139,13 +148,15 @@ class Repository:
         """
         # Use first two chars as subdirectories
         obj_path = self.root + f"objects/{hash_hex[:2]}/{hash_hex[2:4]}/{hash_hex}"
-        
+
         # Skip if already exists
         if self.fs.exists(obj_path):
             return obj_path
 
         # Ensure parent directory exists
-        self.fs.makedirs(self.root + f"objects/{hash_hex[:2]}/{hash_hex[2:4]}", exist_ok=True)
+        self.fs.makedirs(
+            self.root + f"objects/{hash_hex[:2]}/{hash_hex[2:4]}", exist_ok=True
+        )
 
         # Write blob
         with self.fs.open(obj_path, "wb") as f:
@@ -183,7 +194,7 @@ class Repository:
             Path to the written snapshot.
         """
         self._ensure_initialized()
-        
+
         # Generate filename from timestamp and ID
         timestamp = int(snapshot.created_at)
         snapshot_id = snapshot.snapshot_id[:8]
@@ -207,7 +218,7 @@ class Repository:
 
         snapshots = []
         snap_dir = self.root + "snapshots"
-        
+
         if not self.fs.exists(snap_dir):
             return []
 

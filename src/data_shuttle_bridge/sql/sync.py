@@ -1,12 +1,15 @@
 from __future__ import annotations
-from typing import Dict, List, Iterable, Tuple, Set
-from sqlmodel import Session, select
-from .changelog import ChangeLog, SyncState
-from .payloads import TableSchema, apply_row, serialize_row
-from .typing_ import ChangePayload
-from .wiring import set_current_node_id, get_current_node_id
-from enum import Enum
+
 from collections import defaultdict, deque
+from enum import Enum
+from typing import Dict, List, Iterable, Tuple, Set
+
+from sqlmodel import Session, select
+
+from data_shuttle_bridge.sql.changelog import ChangeLog, SyncState
+from data_shuttle_bridge.sql.payloads import TableSchema, apply_row, serialize_row
+from data_shuttle_bridge.sql.typing_ import ChangePayload
+from data_shuttle_bridge.sql.wiring import set_current_node_id, get_current_node_id
 
 
 class ConflictPolicy(str, Enum):

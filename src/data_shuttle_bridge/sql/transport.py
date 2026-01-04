@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 from typing import Iterable, List
-from .typing_ import ChangePayload
+
+from data_shuttle_bridge.sql.typing_ import ChangePayload
 
 
 class PeerTransport:

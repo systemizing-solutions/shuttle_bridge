@@ -1,6 +1,6 @@
 """CLI entry point for shuttle_bridge."""
 
-from .cli import main
+from data_shuttle_bridge.cli import main
 
 
 def cli():

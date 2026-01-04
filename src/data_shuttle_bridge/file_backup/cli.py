@@ -1,7 +1,13 @@
 """CLI commands for fsspec-restic-lite backup tool."""
 
 import argparse
-from .runtime import init_repo, run_backup, list_snapshots, run_restore
+
+from data_shuttle_bridge.file_backup.runtime import (
+    init_repo,
+    run_backup,
+    list_snapshots,
+    run_restore,
+)
 
 
 def cmd_backup_init(args: argparse.Namespace) -> int:
